@@ -13,9 +13,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=11)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    avatar = models.ImageField()
-    bio = models.TextField()
+    avatar = models.ImageField(blank=True,null=True)
+    bio = models.TextField(blank=True,null=True)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
