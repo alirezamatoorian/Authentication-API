@@ -129,3 +129,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Rest Poll Api',
+    'DESCRIPTION': 'Documented API using drf-spectacular',
+    'VERSION': '1.0.0',
+}
