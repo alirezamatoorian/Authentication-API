@@ -35,7 +35,7 @@ class Otp(models.Model):
     is_used = models.BooleanField(default=False)
 
     class Meta:
-        indexes = models.Index(fields=['email'],)
+        indexes = models.Index(fields=['email']),
 
     def is_expired(self):
         return timezone.now() > self.created_at + timedelta(minutes=3)
