@@ -12,7 +12,7 @@ class SendOtpSerializer(serializers.Serializer):
     def create(self, validated_data):
         email = validated_data['email']
         code = generate_otp()
-        otp = Otp.objects.create(email=self.email, code=code)
+        otp = Otp.objects.create(email=email, code=code)
         print(code)
         return {
             "email": email,

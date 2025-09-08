@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import SendOtpSerializer
+from .serializers import SendOtpSerializer, VerifyOtpSerializer
 
 
 # Create your views here.
@@ -18,7 +18,7 @@ class SendOtpView(APIView):
 
 class VerifyOtpView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = SendOtpSerializer(data=request.data)
+        serializer = VerifyOtpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
         return Response(result, status=status.HTTP_201_CREATED)
