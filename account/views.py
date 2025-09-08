@@ -4,12 +4,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import SendOtpSerializer, VerifyOtpSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from .throttles import SendOtpThrottle
 
 
 # Create your views here.
 
 
 class SendOtpView(APIView):
+    throttle_classes = [SendOtpThrottle]
     def post(self, request, *args, **kwargs):
         serializer = SendOtpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
