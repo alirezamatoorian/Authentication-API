@@ -37,7 +37,7 @@ class VerifyOtpSerializer(serializers.Serializer):
         otp.is_used = True
         otp.save()
         user, created = User.objects.get_or_create(email=email)
-        return {
-            "message": "احراز هویت موفق بود.",
-            "is_new_user": created
-        }
+        return user
+
+
+
