@@ -34,7 +34,7 @@ class VerifyOtpSerializer(serializers.Serializer):
             raise serializers.ValidationError("کد صحیح نیست")
         if otp.is_expired():
             raise serializers.ValidationError("کد منقضی شده است")
-        attrs['oto'] = otp
+        attrs['otp'] = otp
         return attrs
 
     def create(self, validated_data):
@@ -43,3 +43,10 @@ class VerifyOtpSerializer(serializers.Serializer):
         otp.save()
         user, created = User.objects.get_or_create(email=validated_data['email'])
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'bio', 'avatar']
+        read_only_fields = ['id', 'email']
