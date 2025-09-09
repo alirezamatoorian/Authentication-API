@@ -2,9 +2,11 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import SendOtpSerializer, VerifyOtpSerializer
+from rest_framework.generics import RetrieveUpdateAPIView
+from .serializers import SendOtpSerializer, VerifyOtpSerializer, ProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from .throttles import SendOtpThrottle
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -12,6 +14,7 @@ from .throttles import SendOtpThrottle
 
 class SendOtpView(APIView):
     throttle_classes = [SendOtpThrottle]
+
     def post(self, request, *args, **kwargs):
         serializer = SendOtpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -31,3 +34,11 @@ class VerifyOtpView(APIView):
         }
 
         return Response(tokens, status=status.HTTP_200_OK)
+
+
+class ProfileView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
