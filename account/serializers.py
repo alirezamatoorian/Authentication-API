@@ -12,7 +12,7 @@ class SendOtpSerializer(serializers.Serializer):
     def create(self, validated_data):
         email = validated_data['email']
         code = generate_otp()
-        otp = Otp.objects.create(email=email, code=code)
+        Otp.objects.create(email=email, code=code)
         print(code)
         return {
             "email": email,
@@ -25,19 +25,21 @@ class VerifyOtpSerializer(serializers.Serializer):
     code = serializers.CharField(max_length=6)
     email = serializers.EmailField()
 
-    def create(self, validated_data):
-        code = validated_data['code']
-        email = validated_data['email']
+    def validate(self, attrs):
+        code = attrs['code']
+        email = attrs['email']
         try:
             otp = Otp.objects.filter(code=code, email=email, is_used=False).latest('created_at')
         except Otp.DoesNotExist:
             raise serializers.ValidationError("کد صحیح نیست")
         if otp.is_expired():
-            raise serializers.ValidationError("کد منقصی شده است")
+            raise serializers.ValidationError("کد منقضی شده است")
+        attrs['oto'] = otp
+        return attrs
+
+    def create(self, validated_data):
+        otp = validated_data['otp']
         otp.is_used = True
         otp.save()
-        user, created = User.objects.get_or_create(email=email)
+        user, created = User.objects.get_or_create(email=validated_data['email'])
         return user
-
-
-
