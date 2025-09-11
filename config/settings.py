@@ -158,3 +158,11 @@ CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+from celery.schedules import crontab
+CELERY_BEAT_SCHEDULE = {
+    'cleanup-otps-every-hour': {
+        'task': 'account.tasks.cleanup_otps',
+        'schedule': crontab(minute='*/2', hour='*'),
+    },
+}
