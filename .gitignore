@@ -25,6 +25,12 @@ db.sqlite3
 media/
 staticfiles/
 
+# Celery & Beat
+celerybeat-schedule
+celerybeat.pid
+*.celerybeat.pid
+
+
 # VSCode or other IDEs
 .vscode/
 .idea/
