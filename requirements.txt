@@ -4,3 +4,4 @@ djangorestframework-simplejwt
 psycopg2-binary>=2.9
 drf-spectacular
 pillow
+celery~=5.5.3

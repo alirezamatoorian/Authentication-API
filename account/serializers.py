@@ -12,13 +12,8 @@ class SendOtpSerializer(serializers.Serializer):
     def create(self, validated_data):
         email = validated_data['email']
         code = generate_otp()
-        Otp.objects.create(email=email, code=code)
-        print(code)
-        return {
-            "email": email,
-            "message": "کد برای شما ارسال شد",
-            "expires_in": "3 minutes"
-        }
+        otp=Otp.objects.create(email=email, code=code)
+        return otp
 
 
 class VerifyOtpSerializer(serializers.Serializer):

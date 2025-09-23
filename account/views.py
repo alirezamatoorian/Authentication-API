@@ -7,6 +7,7 @@ from .serializers import SendOtpSerializer, VerifyOtpSerializer, ProfileSerializ
 from rest_framework_simplejwt.tokens import RefreshToken
 from .throttles import SendOtpThrottle
 from rest_framework.permissions import IsAuthenticated
+from .utils import send_otp_email
 
 
 # Create your views here.
@@ -18,8 +19,9 @@ class SendOtpView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SendOtpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = serializer.save()
-        return Response(result, status=status.HTTP_201_CREATED)
+        otp = serializer.save()
+        send_otp_email(otp.email, otp.code)
+        return Response({"message": "OTP sent successfully!"}, status=200)
 
 
 class VerifyOtpView(APIView):
