@@ -12,7 +12,7 @@ def send_otp_email(email, code):
     send_mail(
         subject,
         message,
-        None,  # یا DEFAULT_FROM_EMAIL
+        None,
         [email],
         fail_silently=False,
     )
