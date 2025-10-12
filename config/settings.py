@@ -12,17 +12,25 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 from celery.schedules import crontab
+import environ
+import os
 
 import account.apps
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(BASE_DIR / '.env')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6^w+cl)9mc&h3b_#nug3h!x9i&styl34%uggu4f&^m*!ydl64r'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,17 +85,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Authentication',
-        'USER': 'AuthenticationApi-admin',
-        'PASSWORD': 'shahrivar1380',
-        'PORT': '5432'
-        #
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        #         'NAME': BASE_DIR / 'db.sqlite3',
-
-    }
+    'default': env.db()
+    #
 }
 
 # Password validation
