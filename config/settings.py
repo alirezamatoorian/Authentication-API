@@ -86,7 +86,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': env.db()
-    #
 }
 
 # Password validation
