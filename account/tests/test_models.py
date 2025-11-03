@@ -34,3 +34,28 @@ def test_user_default_fields():
 def test_create_user_without_email():
     with pytest.raises(ValueError):
         User.objects.create_user(email="", password="1234")
+
+
+@pytest.mark.django_db
+def test_create_otp():
+    otp = Otp.objects.create(email="test@email.com", code='123456')
+    assert otp.email == "test@email.com"
+    assert otp.code == "123456"
+    assert otp.is_used is False
+    assert otp.created_at is not None
+
+
+@pytest.mark.django_db
+def test_is_expired_false():
+    otp = Otp.objects.create(email="ali@example.com", code="123456")
+    otp.created_at = timezone.now() - timedelta(minutes=2)
+    otp.save()
+    assert otp.is_expired() is False
+
+
+@pytest.mark.django_db
+def test_is_expired_true():
+    otp = Otp.objects.create(email="ali@example.com", code="999999")
+    otp.created_at = timezone.now() - timedelta(minutes=5)
+    otp.save()
+    assert otp.is_expired() is True
