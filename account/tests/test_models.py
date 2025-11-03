@@ -1,6 +1,11 @@
 import pytest
 from ..serializers import *
-from ..models import User
+from ..models import Profile, Otp
+from datetime import timedelta
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 @pytest.mark.django_db
@@ -19,7 +24,7 @@ def test_user_str():
 
 
 @pytest.mark.django_db
-def test_default_fields():
+def test_user_default_fields():
     user = User.objects.create_user(email="a@a.com", password="pass123")
     assert user.is_active is True
     assert user.is_staff is False
