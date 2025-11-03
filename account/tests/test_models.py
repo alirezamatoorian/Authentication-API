@@ -59,3 +59,15 @@ def test_is_expired_true():
     otp.created_at = timezone.now() - timedelta(minutes=5)
     otp.save()
     assert otp.is_expired() is True
+
+
+@pytest.mark.django_db
+def test_profile_created_on_user_creation():
+    user = User.objects.create_user(email="ali@example.com", password="1234")
+
+    # بررسی وجود پروفایل
+    assert hasattr(user, "profile")
+    assert isinstance(user.profile, Profile)
+
+    # بررسی ارتباط درست
+    assert user.profile.user == user
