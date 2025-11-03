@@ -20,7 +20,8 @@ class SendOtpView(APIView):
         serializer = SendOtpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         otp = serializer.save()
-        send_otp_email_task.delay(otp.email, otp.code)
+        # send_otp_email_task.delay(otp.email, otp.code)
+        print(otp.code)
         return Response({"message": "OTP sent successfully!"}, status=200)
 
 
