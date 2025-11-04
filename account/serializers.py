@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .utils import generate_otp
-from .models import Otp
+from .models import Otp,Profile
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -42,6 +42,5 @@ class VerifyOtpSerializer(serializers.Serializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'bio', 'avatar']
-        read_only_fields = ['id', 'email']
+        model = Profile
+        fields = ['id', 'phone', 'first_name', 'last_name', 'bio', 'avatar']

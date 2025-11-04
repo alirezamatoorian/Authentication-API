@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+# tests for User model---------
 @pytest.mark.django_db
 def test_create_user():
     user = User.objects.create_user(email="ali@example.com", password="1234")
@@ -36,6 +37,8 @@ def test_create_user_without_email():
         User.objects.create_user(email="", password="1234")
 
 
+# tests for Otp model----------
+
 @pytest.mark.django_db
 def test_create_otp():
     otp = Otp.objects.create(email="test@email.com", code='123456')
@@ -61,13 +64,28 @@ def test_is_expired_true():
     assert otp.is_expired() is True
 
 
+# tests for Profile model---------
+
 @pytest.mark.django_db
 def test_profile_created_on_user_creation():
     user = User.objects.create_user(email="ali@example.com", password="1234")
-
-    # بررسی وجود پروفایل
     assert hasattr(user, "profile")
     assert isinstance(user.profile, Profile)
-
-    # بررسی ارتباط درست
     assert user.profile.user == user
+
+
+@pytest.mark.django_db
+def test_profile_not_duplicated_on_user_update():
+    user = User.objects.create_user(email="ali@example.com", password="1234")
+    profile_id = user.profile.id
+    user.email = "new@example.com"
+    user.save()
+    assert user.profile.id == profile_id
+    assert Profile.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_delete_profile():
+    user = User.objects.create_user(email="ali@example.com", password="1234")
+    user.delete()
+    assert Profile.objects.count() == 0
