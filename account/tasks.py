@@ -1,9 +1,9 @@
 from celery import shared_task
 from datetime import timedelta
-
 from django.core.mail import send_mail
 from django.utils.timezone import now
 from .models import Otp
+from django.conf import settings
 
 
 @shared_task
@@ -20,7 +20,7 @@ def send_otp_email_task(email, code):
     send_mail(
         subject,
         message,
-        None,
+        settings.DEFAULT_FROM_EMAIL,
         [email],
         fail_silently=False,
     )
