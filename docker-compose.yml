@@ -4,7 +4,7 @@ services:
     build: .
     container_name: drf_app
     env_file:
-      - .env
+      - .env.dev
     volumes:
       - .:/app
     command: "python manage.py runserver 0.0.0.0:8000"
@@ -17,7 +17,7 @@ services:
     image: postgres:17
     container_name: postgres_db
     env_file:
-      - .env
+      - .env.dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -34,5 +34,16 @@ services:
     command: celery --app=config worker -l INFO
     depends_on:
       - redis
+  celery_beat:
+    container_name: celery_beat
+    build: .
+    command: celery --app=config beat -l INFO
+    volumes:
+      - .:/app
+      - celery_beat_data:/app/celerybeat
+    depends_on:
+      - redis
+      - db
 volumes:
   postgres_data:
+  celery_beat_data:
