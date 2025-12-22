@@ -27,6 +27,7 @@ staticfiles/
 
 # Celery & Beat
 celerybeat-schedule
+celerybeat-schedule.*
 celerybeat.pid
 *.celerybeat.pid
 

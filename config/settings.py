@@ -151,13 +151,13 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
 }
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 
 CELERY_BEAT_SCHEDULE = {
     'cleanup-otps-every-hour': {
-        'task': 'account.tasks.cleanup_otps',
+        'task': 'account.tasks.remove_expired_otp',
         'schedule': crontab(minute='*/2', hour='*'),
     },
 }
@@ -166,6 +166,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "ali.r.matourianpoor@gmail.com"
-EMAIL_HOST_PASSWORD = "gmadruyhfgkcvjqc"
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
