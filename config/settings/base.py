@@ -143,9 +143,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-
 CELERY_BEAT_SCHEDULE = {
     'cleanup-otps-every-hour': {
         'task': 'account.tasks.remove_expired_otp',
