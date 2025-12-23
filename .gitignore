@@ -14,7 +14,7 @@ env/
 venv/
 ENV/
 .venv/
-.env.dev
+.env.*
 
 # Django stuff
 *.log
