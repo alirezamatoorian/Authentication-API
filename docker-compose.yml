@@ -4,20 +4,20 @@ services:
     build: .
     container_name: drf_app
     env_file:
-      - .env.prod
+      - .env
     volumes:
       - .:/app
-    command: "python manage.py runserver 0.0.0.0:8000"
+      - static_volume:/app/staticfiles
     depends_on:
       - db
       - redis
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
   db:
     image: postgres:17
     container_name: postgres_db
     env_file:
-      - .env.prod
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -44,6 +44,15 @@ services:
     depends_on:
       - redis
       - db
+  nginx:
+    image: nginx:alpine
+    container_name: "nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
 volumes:
   postgres_data:
   celery_beat_data:
+  static_volume:
