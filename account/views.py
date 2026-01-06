@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .throttles import SendOtpThrottle
 from rest_framework.permissions import IsAuthenticated
 from .tasks import send_otp_email_task
+from .models import *
 
 
 # Create your views here.
@@ -41,6 +42,7 @@ class VerifyOtpView(APIView):
 class ProfileView(RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+    queryset = Profile.objects.select_related('user')
 
     def get_object(self):
-        return self.request.user
+        return self.request.user.profile
